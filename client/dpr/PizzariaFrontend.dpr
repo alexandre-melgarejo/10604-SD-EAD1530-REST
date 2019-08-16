@@ -6,9 +6,9 @@ program PizzariaFrontend;
 uses
   Vcl.Forms,
   UFrmPrincipal in '..\pas\ui\UFrmPrincipal.pas' {Form1},
-  UEfetuarPedidoDTOImpl in '..\..\shared\pas\dto\UEfetuarPedidoDTOImpl.pas',
   UPizzaSaborEnum in '..\..\shared\pas\enum\UPizzaSaborEnum.pas',
-  UPizzaTamanhoEnum in '..\..\shared\pas\enum\UPizzaTamanhoEnum.pas';
+  UPizzaTamanhoEnum in '..\..\shared\pas\enum\UPizzaTamanhoEnum.pas',
+  UEfetuarPedidoDTOImpl in '..\..\shared\pas\dto\UEfetuarPedidoDTOImpl.pas';
 
 {$R *.res}
 

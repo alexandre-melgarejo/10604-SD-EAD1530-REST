@@ -16,12 +16,10 @@ type
     FValorTotalPedido: Currency;
     FTempoPreparo: Integer;
   published
-    property PizzaTamanho: TPizzaTamanhoEnum read FPizzaTamanho
-      write FPizzaTamanho;
-    property PizzaSabor: TPizzaSaborEnum read FPizzaSabor write FPizzaSabor;
-    property ValorTotalPedido: Currency read FValorTotalPedido
-      write FValorTotalPedido;
-    property TempoPreparo: Integer read FTempoPreparo write FTempoPreparo;
+    property pizzatamanho: TPizzaTamanhoEnum read FPizzaTamanho write FPizzaTamanho;
+    property pizzasabor: TPizzaSaborEnum read FPizzaSabor write FPizzaSabor;
+    property valortotalpedido: Currency read FValorTotalPedido write FValorTotalPedido;
+    property tempopreparo: Integer read FTempoPreparo write FTempoPreparo;
   public
     constructor Create(const APizzaTamanho: TPizzaTamanhoEnum;
       const APizzaSabor: TPizzaSaborEnum; const AValorTotalPedido: Currency;

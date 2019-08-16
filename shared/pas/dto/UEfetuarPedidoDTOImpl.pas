@@ -10,15 +10,13 @@ type
   [MVCNameCase(ncLowerCase)]
   TEfetuarPedidoDTO = class(TRemotable)
   private
-    FPizzaTamanho: TPizzaTamanhoEnum;
-    FPizzaSabor: TPizzaSaborEnum;
-    FDocumentoCliente: String;
+    Fpizzatamanho: Tpizzatamanhoenum;
+    Fpizzasabor: Tpizzasaborenum;
+    Fdocumentocliente: String;
   published
-    property PizzaTamanho: TPizzaTamanhoEnum read FPizzaTamanho
-      write FPizzaTamanho;
-    property PizzaSabor: TPizzaSaborEnum read FPizzaSabor write FPizzaSabor;
-    property DocumentoCliente: String read FDocumentoCliente
-      write FDocumentoCliente;
+    property pizzatamanho: TPizzaTamanhoEnum read Fpizzatamanho write Fpizzatamanho;
+    property pizzasabor: TPizzaSaborEnum read FPizzaSabor write FPizzaSabor;
+    property documentocliente: String read FDocumentoCliente write FDocumentoCliente;
   end;
 
 implementation

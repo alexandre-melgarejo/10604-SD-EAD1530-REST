@@ -16,6 +16,7 @@ type
     function calcularTempoPreparo(const APizzaTamanho: TPizzaTamanhoEnum; const APizzaSabor: TPizzaSaborEnum): Integer;
   public
     function efetuarPedido(const APizzaTamanho: TPizzaTamanhoEnum; const APizzaSabor: TPizzaSaborEnum; const ADocumentoCliente: String): TPedidoRetornoDTO;
+    function consultarPedido(const ADocumentoCliente: String): TPedidoRetornoDTO;
 
     constructor Create; reintroduce;
   end;
@@ -23,11 +24,13 @@ type
 implementation
 
 uses
-  UPedidoRepositoryImpl, System.SysUtils, UClienteServiceImpl;
+  UPedidoRepositoryImpl, System.SysUtils, UClienteServiceImpl,
+  FireDAC.Comp.Client, data.DB, System.TypInfo;
 
 { TPedidoService }
 
-function TPedidoService.calcularTempoPreparo(const APizzaTamanho: TPizzaTamanhoEnum; const APizzaSabor: TPizzaSaborEnum): Integer;
+function TPedidoService.calcularTempoPreparo(const APizzaTamanho: TPizzaTamanhoEnum;
+                                             const APizzaSabor: TPizzaSaborEnum): Integer;
 begin
   Result := 15;
   case APizzaTamanho of
@@ -56,6 +59,36 @@ begin
   end;
 end;
 
+function TPedidoService.consultarPedido(
+  const ADocumentoCliente: String): TPedidoRetornoDTO;
+var
+    oFDQuery: TFDQuery;
+    oTamanho: TPizzaTamanhoEnum;
+    oSabor: TPizzaSaborEnum;
+begin
+
+  try
+    oFDQuery := TFDQuery.Create(nil);
+    FPedidoRepository.consultarPedido(ADocumentoCliente, oFDQuery);
+    if (oFDQuery.IsEmpty) then
+      // Cliente nao encontrado, retorna vazio
+      Result := nil
+    else
+      begin
+        oTamanho := TPizzaTamanhoEnum(GetEnumValue(TypeInfo(TPizzaTamanhoEnum), oFDQuery.FieldByName('tx_Tamanho').AsString));
+        oSabor   := TPizzaSaborEnum(GetEnumValue(TypeInfo(TPizzaSaborEnum), oFDQuery.FieldByName('tx_Sabor').AsString));
+        Result := TPedidoRetornoDTO.Create(oTamanho
+                                          ,oSabor
+                                          ,oFDQuery.FieldByName('vl_pedido').AsCurrency
+                                          ,oFDQuery.FieldByName('nr_tempopedido').AsInteger);
+      end;
+  finally
+    oFDQuery.Free;
+  end;
+
+//  Result := TPedidoRetornoDTO.Create(APizzaTamanho, APizzaSabor, oValorPedido, oTempoPreparo);
+end;
+
 constructor TPedidoService.Create;
 begin
   inherited;
@@ -64,7 +97,9 @@ begin
   FClienteService := TClienteService.Create;
 end;
 
-function TPedidoService.efetuarPedido(const APizzaTamanho: TPizzaTamanhoEnum; const APizzaSabor: TPizzaSaborEnum; const ADocumentoCliente: String)
+function TPedidoService.efetuarPedido(const APizzaTamanho: TPizzaTamanhoEnum;
+                                      const APizzaSabor: TPizzaSaborEnum;
+                                      const ADocumentoCliente: String)
   : TPedidoRetornoDTO;
 var
   oValorPedido: Currency;
